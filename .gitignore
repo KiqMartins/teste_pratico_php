@@ -17,3 +17,5 @@ docker/logs/
 .phpunit.result.cache
 
 .env
+
+.phpunit.cache
