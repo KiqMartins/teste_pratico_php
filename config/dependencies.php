@@ -7,12 +7,15 @@ use Doctrine\ORM\ORMSetup;
 use Psr\Container\ContainerInterface;
 use Doctrine\DBAL\Connection;
 
+use App\Domain\Repository\UserRepositoryInterface;
+use App\Infrastructure\Persistence\Doctrine\Repository\DoctrineUserRepository;
+
 return [
     EntityManagerInterface::class => function (ContainerInterface $c) {
-        $paths = [__DIR__ . '/../src/Domain/Entity'];
-        $isDevMode = true; 
+        $paths = [__DIR__ . '/../src/Infrastructure/Persistence/Doctrine/Mapping'];
+        $isDevMode = getenv('APP_ENV') === 'local';
 
-        $config = ORMSetup::createAttributeMetadataConfiguration($paths, $isDevMode);
+        $config = ORMSetup::createXMLMetadataConfiguration($paths, $isDevMode);
 
         $connectionParams = [
             'dbname'   => getenv('MYSQL_DATABASE') ?: 'teste_pratico_db',
@@ -29,4 +32,6 @@ return [
     Connection::class => function (ContainerInterface $c) {
         return $c->get(EntityManagerInterface::class)->getConnection();
     },
+
+    UserRepositoryInterface::class => DI\autowire(DoctrineUserRepository::class),
 ];
