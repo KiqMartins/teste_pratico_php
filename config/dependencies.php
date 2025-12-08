@@ -9,6 +9,8 @@ use Doctrine\DBAL\Connection;
 
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\Persistence\Doctrine\Repository\DoctrineUserRepository;
+use App\Domain\Repository\ContactRepositoryInterface;
+use App\Infrastructure\Persistence\Doctrine\Repository\DoctrineContactRepository;
 
 return [
     EntityManagerInterface::class => function (ContainerInterface $c) {
@@ -34,4 +36,5 @@ return [
     },
 
     UserRepositoryInterface::class => DI\autowire(DoctrineUserRepository::class),
+    ContactRepositoryInterface::class => \DI\autowire(DoctrineContactRepository::class),
 ];
