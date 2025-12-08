@@ -41,6 +41,28 @@ class Contact
         $this->address = $address;
     }
 
+    public function syncPhones(array $newPhoneNumbers): void
+    {
+        foreach ($this->phones as $existingPhone) {
+            if (!in_array($existingPhone->getNumber(), $newPhoneNumbers)) {
+                $this->phones->removeElement($existingPhone);
+            }
+        }
+
+        $currentNumbers = array_map(fn($p) => $p->getNumber(), $this->phones->toArray());
+
+        foreach ($newPhoneNumbers as $number) {
+            if (!in_array($number, $currentNumbers)) {
+                $this->addPhone(new Phone($number));
+            }
+        }
+    }
+
+    public function updateEmail(Email $email): void
+    {
+        $this->email = $email;
+    }
+    
     public function getAddress(): string { return $this->address; }
     public function getId(): ?int { return $this->id; }
     public function getName(): string { return $this->name; }
