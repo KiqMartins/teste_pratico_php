@@ -5,6 +5,6 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <embeddable name="App\Domain\ValueObject\Email">
-        <field name="value" type="string" unique="true" />
+        <field name="value" type="string" unique="true" column="email" />
     </embeddable>
 </doctrine-mapping>
