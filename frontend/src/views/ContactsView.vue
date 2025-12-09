@@ -83,7 +83,6 @@ const getAvatarColor = (id: number) => avatarColors[id % avatarColors.length];
 
     <div class="bg-white border border-gray-200 rounded-t-lg p-3 flex items-center justify-between">
       <div class="flex items-center gap-4 pl-2">
-        <input type="checkbox" @change="toggleSelectAll" class="rounded border-gray-300 text-blue-500 focus:ring-0 cursor-pointer">
         <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Basic Info</span>
       </div>
       <div class="flex gap-10 text-xs font-bold text-gray-400 uppercase tracking-wider pr-10 hidden md:flex">
