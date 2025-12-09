@@ -18,11 +18,11 @@ const logout = () => {
     <header class="bg-primary text-white shadow-lg" v-if="userId">
       <div class="container mx-auto px-4 py-4 flex justify-between items-center">
         <h1 class="text-xl font-bold flex items-center gap-2">
-          <span>📒</span> Agenda de Contatos
+          <span>📒</span> My Agenda
         </h1>
         <nav class="flex gap-4">
-          <RouterLink to="/" class="hover:text-primary-light transition">Meus Contatos</RouterLink>
-          <button @click="logout" class="hover:text-red-200 transition">Sair</button>
+          <RouterLink to="/" class="hover:text-primary-light transition">My Contacts</RouterLink>
+          <button @click="logout" class="hover:text-red-200 transition">Exit</button>
         </nav>
       </div>
     </header>

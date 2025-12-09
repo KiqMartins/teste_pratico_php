@@ -32,9 +32,9 @@ const handleLogin = async () => {
   } catch (error) {
     const err = error as AxiosError;
     if (err.response && err.response.status === 409) {
-      errorMessage.value = 'Este usuário já existe. Tente outro e-mail.';
+      errorMessage.value = 'This user already exists. Please try another email.';
     } else {
-      errorMessage.value = 'Ocorreu um erro ao conectar ao servidor.';
+      errorMessage.value = 'An error occurred while connecting to the server.';
     }
   } finally {
     loading.value = false;
@@ -52,11 +52,11 @@ const handleLogin = async () => {
         </svg>
       </div>
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
-        {{ isRegistering ? 'Criar nova conta' : 'Acesse sua conta' }}
+        {{ isRegistering ? 'Create new account' : 'Sign in to your account' }}
       </h2>
       <p class="mt-2 text-center text-sm text-gray-600">
-        Gerencie seus contatos de forma
-        <span class="font-medium text-primary hover:text-primary-dark transition">ágil e simples</span>.
+        Manage your contacts in a
+        <span class="font-medium text-primary hover:text-primary-dark transition">simple and agile way</span>.
       </p>
     </div>
 
@@ -66,25 +66,25 @@ const handleLogin = async () => {
         <form class="space-y-6" @submit.prevent="handleLogin">
           
           <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
             <div class="mt-1">
               <input id="name" name="name" type="text" autocomplete="name" required v-model="form.name"
                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm transition ease-in-out duration-150"
-                placeholder="Ex: João Silva">
+                placeholder="Ex: John Doe">
             </div>
           </div>
 
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Endereço de E-mail</label>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
             <div class="mt-1">
               <input id="email" name="email" type="email" autocomplete="email" required v-model="form.email"
                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm transition ease-in-out duration-150"
-                placeholder="seu@email.com">
+                placeholder="you@email.com">
             </div>
           </div>
 
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
             <div class="mt-1">
               <input id="password" name="password" type="password" autocomplete="current-password" required v-model="form.password"
                 class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm transition ease-in-out duration-150"
@@ -112,7 +112,7 @@ const handleLogin = async () => {
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              {{ loading ? 'Processando...' : (isRegistering ? 'Criar Conta' : 'Entrar na Plataforma') }}
+              {{ loading ? 'Processing...' : (isRegistering ? 'Create Account' : 'Sign In') }}
             </button>
           </div>
         </form>
