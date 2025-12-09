@@ -7,6 +7,7 @@ use App\Domain\Repository\ContactRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ArrayParameterType;
 
 class DoctrineContactRepository implements ContactRepositoryInterface
 {
@@ -42,29 +43,50 @@ class DoctrineContactRepository implements ContactRepositoryInterface
         ]);
     }
 
-    public function findAllByUserIdPaginated(int $userId, int $page, int $limit): array
+   public function findAllByUserIdPaginated(int $userId, int $page, int $limit): array
     {
         $offset = ($page - 1) * $limit;
 
         $qb = $this->connection->createQueryBuilder();
         
-        $query = $qb->select('c.id', 'c.name', 'c.value AS email', 'c.address')
+        $query = $qb->select('c.id', 'c.name', 'c.email', 'c.address') 
             ->from('contacts', 'c')
             ->where('c.user_id = :userId')
             ->orderBy('c.name', 'ASC')
             ->setParameter('userId', $userId);
-            
+
         $countQuery = clone $query;
         $total = (int) $countQuery->select('COUNT(c.id)')->executeQuery()->fetchOne();
 
-        $data = $query->select('c.id', 'c.name', 'c.email', 'c.address')
+        $contacts = $query->select('c.id', 'c.name', 'c.email', 'c.address')
             ->setFirstResult($offset)
             ->setMaxResults($limit)
             ->executeQuery()
             ->fetchAllAssociative();
+        
+        if (!empty($contacts)) {
+            $contactIds = array_column($contacts, 'id');
+
+            $qbPhone = $this->connection->createQueryBuilder();
+            $phones = $qbPhone->select('p.contact_id', 'p.number')
+                ->from('phones', 'p')
+                ->where('p.contact_id IN (:ids)')
+                ->setParameter('ids', $contactIds, ArrayParameterType::INTEGER)
+                ->executeQuery()
+                ->fetchAllAssociative();
+
+            $phonesByContact = [];
+            foreach ($phones as $phone) {
+                $phonesByContact[$phone['contact_id']][] = ['number' => $phone['number']];
+            }
+
+            foreach ($contacts as &$contact) {
+                $contact['phones'] = $phonesByContact[$contact['id']] ?? [];
+            }
+        }
 
         return [
-            'data' => $data,
+            'data' => $contacts,
             'total' => $total,
             'page' => $page,
             'limit' => $limit
