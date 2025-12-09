@@ -3,6 +3,15 @@
 use FastRoute\Dispatcher;
 use Laminas\Diactoros\ServerRequestFactory;
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Content-Type, X-User-Id, Authorization');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
 $container = require __DIR__ . '/../config/bootstrap.php';
 
 $dispatcher = FastRoute\simpleDispatcher(require __DIR__ . '/../config/routes.php');
