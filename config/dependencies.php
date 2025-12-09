@@ -14,10 +14,22 @@ use App\Infrastructure\Persistence\Doctrine\Repository\DoctrineContactRepository
 
 return [
     EntityManagerInterface::class => function (ContainerInterface $c) {
-        $paths = [__DIR__ . '/../src/Infrastructure/Persistence/Doctrine/Mapping'];
+        $mappingPaths = [__DIR__ . '/../src/Infrastructure/Persistence/Doctrine/Mapping'];
         $isDevMode = getenv('APP_ENV') === 'local';
 
-        $config = ORMSetup::createXMLMetadataConfiguration($paths, $isDevMode);
+        $proxyDir = __DIR__ . '/../var/proxies';
+
+        $config = ORMSetup::createXMLMetadataConfiguration(
+            $mappingPaths, 
+            $isDevMode, 
+            $proxyDir 
+        );
+
+        if ($isDevMode) {
+            $config->setAutoGenerateProxyClasses(true);
+        } else {
+            $config->setAutoGenerateProxyClasses(false);
+        }
 
         $connectionParams = [
             'dbname'   => getenv('MYSQL_DATABASE') ?: 'teste_pratico_db',
