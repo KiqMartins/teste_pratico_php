@@ -38,6 +38,18 @@ services:
     networks:
       - teste_pratico_net
 
+  frontend:
+    image: node:20-alpine
+    container_name: teste_pratico_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173" 
+    command: npm run dev -- --host 
+    networks:
+      - teste_pratico_net
+
 networks:
   teste_pratico_net:
     driver: bridge
