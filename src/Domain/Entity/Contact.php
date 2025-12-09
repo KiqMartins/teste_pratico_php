@@ -41,9 +41,9 @@ class Contact
         $this->address = $address;
     }
 
-    public function syncPhones(array $newPhoneNumbers): void
+   public function syncPhones(array $newPhoneNumbers): void
     {
-        foreach ($this->phones as $existingPhone) {
+        foreach ($this->phones->toArray() as $existingPhone) {
             if (!in_array($existingPhone->getNumber(), $newPhoneNumbers)) {
                 $this->phones->removeElement($existingPhone);
             }
@@ -52,7 +52,7 @@ class Contact
         $currentNumbers = array_map(fn($p) => $p->getNumber(), $this->phones->toArray());
 
         foreach ($newPhoneNumbers as $number) {
-            if (!in_array($number, $currentNumbers)) {
+            if (!empty($number) && !in_array($number, $currentNumbers)) {
                 $this->addPhone(new Phone($number));
             }
         }
